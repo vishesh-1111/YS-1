@@ -1,26 +1,26 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
-import clsx from "clsx";
-import {twMerge} from "tailwind-merge";
+import QueryClientProviderComponent from '@/components/queryClientProvider/provider';
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Light Saas Landing Page",
-  description: "Template created by Frontend Tribe",
+  title: "EzTask",
+  description: "Task Management App",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" className="relative">
-      <body className={clsx(dmSans.className, "antialiased bg-[#EAEEFE]")}>
-        {children}
-      </body>
-    </html>
-  );
-}
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  
+    return (
+      <html lang="en">
+        <body className="h-screen">
+         <QueryClientProviderComponent>
+          {children}
+         </QueryClientProviderComponent>
+
+        </body>
+      </html>
+    );
+    };

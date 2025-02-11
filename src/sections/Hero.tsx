@@ -12,6 +12,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 
 export const Hero = () => {
   const heroRef = useRef(null);
@@ -34,20 +35,19 @@ export const Hero = () => {
       <div className="container">
         <div className="md:flex items-center">
           <div className="md:w-[478px]">
-            <div className="tag">Version 2.0 is here</div>
+         
             <h1 className="text-5xl md:text-7xl font-bold tracking-tigher bg-gradient-to-b from-black to-[#001e80] text-transparent bg-clip-text mt-6">
               Pathway to productivity
             </h1>
             <p className="text-xl text-[#010d3e] tracking-tight mt-6">
-              Celebrate the joy of accomplishment with an app designed to track
-              your progress, motivate your efforts, and celebrate your success.
+              An app designed to track
+              your progress,manage your tasks,fix your schedule.
             </p>
             <div className="flex gap-1 items-center mt-[30px]">
-              <button className="btn btn-primary">Get for free</button>
-              <button className="btn btn-text gap-1">
-                <span>Learn more</span>
-                <ArrowIcon className="h-5 w-5" />
-              </button>
+              <Link href={'/register'}>
+              <button className="btn btn-primary">Start for free</button>
+              </Link>
+             
             </div>
           </div>
 
@@ -60,6 +60,7 @@ export const Hero = () => {
                 translateY: [-30, 30],
               }}
               transition={{
+                
                 repeat: Infinity,
                 repeatType: "mirror",
                 duration: 3,
