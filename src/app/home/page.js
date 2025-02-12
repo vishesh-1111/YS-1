@@ -1,19 +1,6 @@
-<<<<<<< Updated upstream
-"use client"
-import IndexPage from "../../../src-table/app/page"
-export default function HomePage(){
-    
-   
-    return(
-        <div>
-          Home page
-        </div>
-    )
-}
-=======
 "use client";
 import { Router, useRouter } from "next/navigation";
-import { useEffect} from "react";
+import { useEffect, } from "react";
 
 
 export default function HomePage() {
@@ -21,7 +8,7 @@ export default function HomePage() {
   useEffect(()=>{
     router.push('/home/inbox')
 
-  },[router])
+  },[])
 
   return(
     <div>
@@ -30,4 +17,3 @@ export default function HomePage() {
   )
 
 }
->>>>>>> Stashed changes

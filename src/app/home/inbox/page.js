@@ -1,15 +1,9 @@
+"use client";
 
-<<<<<<< Updated upstream
-
-export default function RenderInbox (){
- return(
-    <div>
-        inbox
-=======
 import * as React from "react";
 import { useQuery ,useQueryClient} from "@tanstack/react-query";
 import RenderAddTask from "./components/inputmodal";
-import { Task, Columns } from "./columns";
+import { Task, columns } from "./columns";
 import { DataTable } from "./data-table";
 import "./components/data";
 
@@ -47,9 +41,8 @@ export default function DemoPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable  columns={Columns} data={taskData} />
+      <DataTable  columns={columns} data={taskData} />
       <RenderAddTask />
->>>>>>> Stashed changes
     </div>
- )
-} 
+  );
+}

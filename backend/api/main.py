@@ -7,8 +7,10 @@ import bcrypt
 from db.userSchema import validate_user
 from db.taskSchema import validate_task
 from pymongo.errors import PyMongoError
+from bson import ObjectId
+from dotenv import load_dotenv
+import os
 
-# from middleware.auth import jwt_middleware
 from jose import JWTError, jwt
 
 # # FastAPI app setup
@@ -31,7 +33,9 @@ app.add_middleware(
 )
 @app.middleware("http")
 async def jwt_middleware(request: Request, call_next):
-    token = request.cookies.get("token")
+
+    token = request.cookies.get("token") or request.headers.get("authorization")
+   
     if token:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -44,15 +48,15 @@ async def jwt_middleware(request: Request, call_next):
     print('middleware',request.state.user); 
     response = await call_next(request)
     return response
+load_dotenv()
+database_url = os.getenv("DATABASE_URL")
+print(database_url)
 
-
-# # MongoDB connection
-client = AsyncIOMotorClient("mongodb://localhost:27017")  # Replace with your MongoDB URI if needed
+client = AsyncIOMotorClient()  
 db = client["db30"]
 user_collection = db["users"]
 task_collection = db["tasks"]
 
-# Request body model for login
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
@@ -61,6 +65,15 @@ class SignupRequest(BaseModel):
     last_name: str
     email: EmailStr
     password: str
+
+class TaskPostRequest(BaseModel):
+    title : str
+    description : str 
+
+class TaskPutRequest(BaseModel):
+    title : str
+    description : str 
+    status :str    
 
 
 async def get_user_by_email(email: str):
@@ -71,21 +84,19 @@ async def get_user_by_email(email: str):
 
 @app.post("/register")
 async def signup(request: SignupRequest):
-    # user = request.state.user
-    # print(user)
+  
     """Signup route to create a new user."""
 
     # Check if the email already exists in the database
     existing_user = await user_collection.find_one({"email": request.email})
     if existing_user:
-        # If email already exists, raise HTTP 400 error
+        # if email already exists, raise HTTP 400 error
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Generate salt and hash for the password
+    
     salt = bcrypt.gensalt()  
     hash = bcrypt.hashpw(request.password.encode("utf-8"), salt).decode("utf-8")
 
-    # Store user in the database
     user_data = {
         "first_name": request.first_name,
         "last_name": request.last_name,
@@ -97,13 +108,12 @@ async def signup(request: SignupRequest):
     validationResponse = await validate_user(user_data)
 
     if validationResponse['success']:
-        # Store the user in the database if validation succeeds
         user = await user_collection.insert_one(user_data)
      
-        # Return user data along with validationResponse with HTTP 200 status
         return {
             "message": validationResponse["success"],
             "user": {
+                "id" : str(user.inserted_id), 
                 "first_name": user_data["first_name"],
                 "last_name": user_data["last_name"],
                 "email": user_data["email"]
@@ -111,7 +121,6 @@ async def signup(request: SignupRequest):
             "validationResponse": validationResponse
         }
     else:
-        # Raise HTTP 400 with validation error message if validation fails
         raise HTTPException(status_code=400, detail=validationResponse['error'])
 
 
@@ -121,6 +130,7 @@ async def login(request: Request,login_data: LoginRequest,response: Response):
   
     user = await get_user_by_email(login_data.email)
     user_data = {
+     "_id" :str(user.get('_id')),
     'first_name': user.get('first_name'),
     'last_name':  user.get('last_name'),
     'email':      user.get('email'),
@@ -158,28 +168,86 @@ async def login(request: Request,login_data: LoginRequest,response: Response):
 
 
 @app.post("/tasks")
-async def login(request: Request,task_data: LoginRequest,response: Response):
+async def login(request: Request,task_data: TaskPostRequest,response: Response):
     user=request.state.user
+    print(task_data)
 
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    validate_task(task_data)
+    # validate_task(task_data)
     
     try:
         result = await task_collection.insert_one({
             "title": task_data.title,
             "description": task_data.description,
-            "createdBy": user._id,  
-            "status": False
+            "createdBy":user["_id"],  
+            "status": "todo"
         })
         return {"message": "Task created successfully", "task_id": str(result.inserted_id)}
     except PyMongoError as e:
         raise HTTPException(status_code=500, detail=f"Failed to create task: {str(e)}")
+def task_serializer(task):
+    """Convert MongoDB task document to a JSON-serializable format."""
+    return {
+        "_id": str(task["_id"]),
+        "title": task["title"],
+        "description": task["description"],
+        "createdBy": str(task["createdBy"]),
+        "status": task["status"]
+    }
+@app.get("/tasks")
+async def get_tasks(request: Request):
+    user = request.state.user
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    tasks =  await task_collection.find({"createdBy":user["_id"]}).to_list(length=100)
+    serialized_tasks = [task_serializer(task) for task in tasks]
+    return {"tasks": serialized_tasks}
 
 
+@app.put("/tasks/{task_id}")
+async def update_task(task_id: str, task_data: TaskPutRequest, request: Request):
+    user = request.state.user
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    if not ObjectId.is_valid(task_id):
+        raise HTTPException(status_code=400, detail="Invalid task ID")
+
+    task = await task_collection.find_one({"_id": ObjectId(task_id), "createdBy": user["_id"]})
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found or not authorized to update")
+
+    await task_collection.update_one(
+        {"_id": ObjectId(task_id)},
+        {"$set": {"title": task_data.title, 
+                  "description": task_data.description,
+                  "status":task_data.status}}
+    )
+    return {"message": "Task updated successfully"}
+
+
+@app.delete("/tasks/{task_id}")
+async def delete_task(task_id: str, request: Request):
+    user = request.state.user
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    if not ObjectId.is_valid(task_id):
+        raise HTTPException(status_code=400, detail="Invalid task ID")
+
+    task = await task_collection.find_one({"_id": ObjectId(task_id), "createdBy": user["_id"]})
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found or not authorized to delete")
+
+    await task_collection.delete_one({"_id": ObjectId(task_id)})
+    return {"message": "Task deleted successfully"}
     
     
+
+
 @app.get("/")
 async def read_root(request:Request):
     user1=(request.state.user)

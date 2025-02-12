@@ -27,31 +27,31 @@ import {
 
 // Menu items.
 const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
+  // {
+  //   title: "Dashboard",
+  //   url: "/home/dashboard",
+  //   icon: Home,
+  // },
   {
     title: "Inbox",
     url: "/home/inbox",
     icon: Inbox,
   },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "/home/search",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "/home/settings",
-    icon: Settings,
-  },
+  // {
+  //   title: "Today",
+  //   url: "/home/today",
+  //   icon: Calendar,
+  // },
+  // {
+  //   title: "Upcoming",
+  //   url: "/home/upcoming",
+  //   icon: Search,
+  // },
+  // {
+  //   title: "Settings",
+  //   url: "/home/settings",
+  //   icon: Settings,
+  // },
 ]
 
 

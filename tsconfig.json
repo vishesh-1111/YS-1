@@ -22,10 +22,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "src-table/*": ["./src/src-table/*"],
+      "@/*": ["./src/*"],
     },
     "target": "ES2017"
   },
@@ -34,7 +31,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/app/home/inbox/page.js"  ],
   "exclude": [
     "node_modules"
   ]

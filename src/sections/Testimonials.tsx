@@ -16,7 +16,7 @@ import React from "react";
 
 const testimonials = [
   {
-    text: "As a seasoned designer always on the lookout for innovative tools, Framer.com instantly grabbed my attention.",
+    text: "As a seasoned designer always on the lookout for innovative tools, Eztask instantly grabbed my attention.",
     imageSrc: avatar1.src,
     name: "Jamie Rivera",
     username: "@jamietechguru00",
@@ -46,7 +46,7 @@ const testimonials = [
     username: "@taylorkimm",
   },
   {
-    text: "The customizability and integration capabilities of this app are top-notch.",
+    text: "I want my money back and i havent even bought it",
     imageSrc: avatar6.src,
     name: "Riley Smith",
     username: "@rileysmith1",

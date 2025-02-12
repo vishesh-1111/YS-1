@@ -32,12 +32,10 @@ import { Plus } from "lucide-react"
 export type Task = {
   title: string
   description: string,
-  status: string,
-  _id :string
-
+  status: "todo" | "done" 
 }
 
-export const Columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -73,25 +71,26 @@ export const Columns: ColumnDef<Task>[] = [
     header: "description",
     
   },
-{
-  id: "actions",
-  cell: ({ row }) => {
-    const task = row.original;
-    
-    const Actions = () => {
-      const queryClient = useQueryClient(); // Correctly initialize here
-      const [open, setOpen] = useState(false); // Manage modal state
-
-      const taskDeleteHandler = async () => {
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const queryClient = useQueryClient();
+      console.log(queryClient)
+      const taskDeleteHandler = async()=>{
+        const task = row.original
         console.log(task);
-        await fetch(`http://localhost:5000/tasks/${task._id}`, {
-          method: "DELETE",
-          credentials: "include",
-        });
-        queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      };
+        
+        await  fetch(`http://localhost:5000/tasks/${task._id}`,{
+                  method : "DELETE",
+                  credentials : "include"
+                });
+        queryClient.invalidateQueries({
+          queryKey : ["tasks"]
+        })
+            }
 
 
+      const [open, setOpen] = useState(false) // Manage modal state
 
       return (
         <>
@@ -116,8 +115,6 @@ export const Columns: ColumnDef<Task>[] = [
 
         </>
       )
-    }
-    return <Actions />;
+    },
   },
-}
 ]
