@@ -8,7 +8,8 @@ export default function HomePage() {
   useEffect(()=>{
     router.push('/home/inbox')
 
-  },[])
+  },[router])
+  
 
   return(
     <div>

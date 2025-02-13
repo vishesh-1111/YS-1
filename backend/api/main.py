@@ -13,12 +13,14 @@ import os
 
 from jose import JWTError, jwt
 
+load_dotenv()
 # # FastAPI app setup
 app = FastAPI()
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
 origins = [
-    "http://localhost:3000",
+    os.getenv("VERCEL_ORIGIN") ,
+    'http://localhost:3000'
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -48,7 +50,6 @@ async def jwt_middleware(request: Request, call_next):
     print('middleware',request.state.user); 
     response = await call_next(request)
     return response
-load_dotenv()
 database_url = os.getenv("DATABASE_URL")
 print(database_url)
 
