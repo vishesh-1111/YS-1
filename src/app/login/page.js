@@ -16,7 +16,7 @@ export default function LoginForm() {
   const [loginError, setLoginError] = useState(null); // For login failure message
   const router = useRouter(); // For redirecting on successful login
   const queryClient = useQueryClient();
-
+  
   const validateForm = () => {
     const newErrors = {};
     if (!email) newErrors.email = "Email is required";
@@ -61,7 +61,6 @@ export default function LoginForm() {
         // Redirect to the dashboard on successful login
         window.localStorage.setItem("token",JSON.stringify(result.user));
         queryClient.setQueryData(["user"], result.user);  // result.user contains the logged-in user's data
-
 
         router.push("/home");
         console.log("Login successful:", result);
