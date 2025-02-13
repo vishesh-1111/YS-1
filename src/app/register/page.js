@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function SignupForm() {
+  const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

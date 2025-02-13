@@ -43,7 +43,7 @@ async def jwt_middleware(request: Request, call_next):
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
             request.state.user = payload  # Attach user information to request state
         except JWTError:
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
+            print("no token");
     else:
         request.state.user = None  # No token found
 
