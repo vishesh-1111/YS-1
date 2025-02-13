@@ -58,14 +58,11 @@ export default function LoginForm() {
       const result = await response.json();
 
       if (response.ok) {
-        // Redirect to the dashboard on successful login
         window.localStorage.setItem("token",JSON.stringify(result.user));
-        queryClient.setQueryData(["user"], result.user);  // result.user contains the logged-in user's data
-
+        queryClient.setQueryData(["user"], result.user);  
         router.push("/home");
         console.log("Login successful:", result);
       } else {
-        // Handle login error
         setLoginError(result.detail || "Login failed. Please try again.");
         console.log("Login failed:", result.detail);
       }
@@ -73,7 +70,7 @@ export default function LoginForm() {
       console.log("Error:", error);
       setLoginError("An error occurred. Please try again later.");
     } finally {
-      setIsLoading(false); // Re-enable the button after the fetch is completed
+      setIsLoading(false);
     }
   };
 
@@ -117,7 +114,7 @@ export default function LoginForm() {
           <button
             className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
             type="submit"
-            disabled={isLoading} // Disable the button when loading
+            disabled={isLoading}
           >
             {isLoading ? "Logging in..." : <>Log in <span className="inline-block ml-2">&rarr;</span></>}
             <BottomGradient />

@@ -25,18 +25,16 @@ export default function SignupForm() {
 
     setErrors(newErrors);
 
-    // Return true if no errors
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setIsLoading(true); // Disable the button during the fetch
+    setIsLoading(true); 
 
-    // Validate form fields
     if (!validateForm()) {
-      setIsLoading(false); // Re-enable the button if validation fails
+      setIsLoading(false); 
       return;
     }
 
@@ -59,18 +57,16 @@ export default function SignupForm() {
       const result = await response.json();
 
       if (response.ok) {
-        // Redirect to the home page on successful registration
         router.push("/home");
         console.log("User registered successfully:", result);
       } else {
-        // Handle error, e.g., show error message
         console.log("Registration failed:", result.detail);
         alert(result.detail);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false); // Re-enable the button after the fetch is completed
+      setIsLoading(false); 
     }
   };
 
@@ -139,7 +135,7 @@ export default function SignupForm() {
         <button
           className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
-          disabled={isLoading} // Disable the button when loading
+          disabled={isLoading}
         >
           {isLoading ? "Signing up..." : <>Sign up <span className="inline-block ml-2">&rarr;</span></>}
           <BottomGradient />
