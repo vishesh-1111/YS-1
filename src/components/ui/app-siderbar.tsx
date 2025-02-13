@@ -53,12 +53,13 @@ const items = [
   //   icon: Settings,
   // },
 ]
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 
 export function AppSidebar() {
   const router = useRouter();
   const LogoutHandler = ()=>{
-    fetch("http://localhost:5000/logout",{
+    fetch(`${serverUrl}/logout`,{
       method : "GET",
       credentials: "include",
     })

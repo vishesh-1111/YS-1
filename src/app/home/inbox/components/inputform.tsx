@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const formSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -40,7 +41,7 @@ export function TaskForm({ closeModal }: InputFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("http://localhost:5000/tasks", {
+      const response = await fetch(`${serverUrl}/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

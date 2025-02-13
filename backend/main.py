@@ -8,11 +8,11 @@ from db.userSchema import validate_user
 from db.taskSchema import validate_task
 from pymongo.errors import PyMongoError
 from bson import ObjectId
-from dotenv import load_dotenv
 import os
 
 from jose import JWTError, jwt
 
+from dotenv import load_dotenv
 load_dotenv()
 # # FastAPI app setup
 app = FastAPI()

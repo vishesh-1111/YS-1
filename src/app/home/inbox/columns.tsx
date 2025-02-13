@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu"
 import RenderEditTask from "./components/editmodal"
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export type Task = {
   title: string
@@ -64,7 +65,7 @@ export function getColumns(queryClient: ReturnType<typeof useQueryClient>): Colu
           const task = row.original
           console.log(task)
 
-          await fetch(`http://localhost:5000/tasks/${task._id}`, {
+          await fetch(`${serverUrl}/tasks/${task._id}`, {
             method: "DELETE",
             credentials: "include",
           })

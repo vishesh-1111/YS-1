@@ -4,6 +4,7 @@ import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { cn } from "../../lib/utils";
 import { useRouter } from "next/navigation";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function SignupForm() {
   const [firstName, setFirstName] = useState("");
@@ -46,7 +47,7 @@ export default function SignupForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch(`${serverUrl}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

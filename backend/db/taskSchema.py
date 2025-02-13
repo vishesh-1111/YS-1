@@ -3,9 +3,13 @@ from typing import Optional
 from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 from bson import ObjectId
+import os
+from dotenv import load_dotenv
+load_dotenv()
+database_url = os.getenv("DATABASE_URL")
 
 # MongoDB connection
-client = AsyncIOMotorClient("mongodb://localhost:27017")
+client = AsyncIOMotorClient(database_url)
 db = client["db30"]
 user_collection = db["tasks"]
 

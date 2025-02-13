@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const formSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -43,7 +44,7 @@ export function EditForm({ task, closeModal }: any){
 
     console.log(values);
     try {
-      const response = await fetch(`http://localhost:5000/tasks/${task._id}`, {
+      const response = await fetch(`${serverUrl}/tasks/${task._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

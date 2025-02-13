@@ -6,9 +6,10 @@ import RenderAddTask from "./components/inputmodal";
 import { Task, getColumns } from "./columns";
 import { DataTable } from "./data-table";
 import "./components/data";
-
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+console.log(serverUrl);
 async function fetchTasks(){
-  const response = await fetch("http://localhost:5000/tasks", {
+  const response = await fetch(`${serverUrl}/tasks`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

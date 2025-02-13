@@ -5,6 +5,8 @@ import { Input } from "../../components/ui/input";
 import { cn } from "../../lib/utils";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+console.log(serverUrl)
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -43,7 +45,7 @@ export default function LoginForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch(`${serverUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
