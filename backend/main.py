@@ -35,6 +35,8 @@ app.add_middleware(
 )
 @app.middleware("http")
 async def jwt_middleware(request: Request, call_next):
+    request.state.user = None  # Ensure a default value
+
 
     token = request.cookies.get("token") or request.headers.get("authorization")
    
@@ -261,3 +263,7 @@ async def read_root(request:Request):
 async def logout(request: Request,response: Response):
     response.delete_cookie(key="token")  
     return {"message": "Logout successful"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
