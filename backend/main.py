@@ -51,9 +51,8 @@ async def jwt_middleware(request: Request, call_next):
     response = await call_next(request)
     return response
 database_url = os.getenv("DATABASE_URL")
-print(database_url)
 
-client = AsyncIOMotorClient()  
+client = AsyncIOMotorClient(database_url);  
 db = client["db30"]
 user_collection = db["users"]
 task_collection = db["tasks"]
