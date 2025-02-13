@@ -153,11 +153,11 @@ async def login(request: Request,login_data: LoginRequest,response: Response):
     response.set_cookie(
             key="token", 
             value=access_token, 
-            httponly=True,  
+            httponly=False,
+            secure=True,
             max_age=3600,   
             expires=3600,   
             samesite="none",
-            secure=True,
         )
     
     return {"message": "Login successful", "user": {
