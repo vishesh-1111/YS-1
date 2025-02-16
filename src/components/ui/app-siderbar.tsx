@@ -27,11 +27,11 @@ import {
 
 // Menu items.
 const items = [
-  // {
-  //   title: "Dashboard",
-  //   url: "/home/dashboard",
-  //   icon: Home,
-  // },
+  {
+    title: "Dashboard",
+    url: "/home/dashboard",
+    icon: Home,
+  },
   {
     title: "Inbox",
     url: "/home/inbox",

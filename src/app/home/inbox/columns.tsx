@@ -16,9 +16,9 @@ import RenderEditTask from "./components/editmodal"
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export type Task = {
-  title: string
+  amount: Number
   description: string
-  status: string
+  data: string
   _id : string
 }
 
@@ -47,30 +47,44 @@ export function getColumns(queryClient: ReturnType<typeof useQueryClient>): Colu
       enableHiding: false,
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "amount",
+      header: () => <div className="text">Amount</div>,
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("amount"))
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount)
+        return <div className=" font-medium">{formatted}</div>
     },
-    {
-      accessorKey: "title",
-      header: "Title",
     },
     {
       accessorKey: "description",
       header: "Description",
     },
     {
+      accessorKey: "date",
+      header: () => <div className="text">date</div>,
+      cell: ({ row }) => {
+        const date = (row.getValue("date"))
+        
+        const formatted = date.split("T")[0];
+        return <div className=" font-medium">{formatted}</div>
+    },
+    },
+    {
       id: "actions",
       cell: ({ row }) => {
-        const taskDeleteHandler = async () => {
-          const task = row.original
-          console.log(task)
+        const TransactionDeletHandler = async () => {
+          const transaction = row.original
+          console.log(transaction)
 
-          await fetch(`${serverUrl}/tasks/${task._id}`, {
+          await fetch(`${serverUrl}/transactions/${transaction._id}`, {
             method: "DELETE",
             credentials: "include",
           })
 
-          queryClient.invalidateQueries({ queryKey: ["tasks"] })
+          queryClient.invalidateQueries({ queryKey: ["transactions"] })
         }
 
         return (
@@ -84,8 +98,8 @@ export function getColumns(queryClient: ReturnType<typeof useQueryClient>): Colu
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <RenderEditTask task={row.original} />
-              <DropdownMenuItem onClick={taskDeleteHandler}>
+              <RenderEditTask transaction={row.original} />
+              <DropdownMenuItem onClick={TransactionDeletHandler}>
                 <div className="text-red-500">Delete</div>
               </DropdownMenuItem>
             </DropdownMenuContent>

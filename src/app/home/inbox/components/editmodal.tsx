@@ -12,29 +12,29 @@ import {
 import { EditForm } from "./editform"
 
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { Plus,EditIcon } from "lucide-react"
 import React, { useState } from "react"
 
-export default function RenderEditTask({task}:{task:any}) {
+export default function RenderEditTask({transaction}:{transaction:any}) {
   const [open, setOpen] = useState(false) // Manage modal state
-
+  
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" className="flex gap-1">
-            <Plus />
-            Edit Task
+            <EditIcon />
+            Edit Transaction
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Task</DialogTitle>
             <DialogDescription>
-              Edit a task by entering the following details.
+              Edit a transaction by entering the following details.
             </DialogDescription>
           </DialogHeader>
-          <EditForm task={task} closeModal={() => setOpen(false)} />
+          <EditForm transaction={transaction} closeModal={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

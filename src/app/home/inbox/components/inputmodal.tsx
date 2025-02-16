@@ -24,14 +24,14 @@ export default function RenderAddTask() {
         <DialogTrigger asChild>
           <Button variant="outline" className="flex gap-1">
             <Plus />
-            Add Task
+            Add Transaction
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Task</DialogTitle>
+            <DialogTitle>Transaction</DialogTitle>
             <DialogDescription>
-              Add a task by entering the following details.
+              Add a transaction by entering the following details.
             </DialogDescription>
           </DialogHeader>
           <TaskForm closeModal={() => setOpen(false)} />

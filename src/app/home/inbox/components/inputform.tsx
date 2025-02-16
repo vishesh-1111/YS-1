@@ -16,11 +16,11 @@ import {
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const formSchema = z.object({
-  title: z.string().min(2, { message: "Title must be at least 2 characters." }),
+  amount: z.coerce.number(),
   description: z
     .string()
     .min(2, { message: "Description must be at least 2 characters." }),
-    status: z.string(),
+    date: z.string(),
 
 })
 
@@ -33,15 +33,15 @@ export function TaskForm({ closeModal }: InputFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      amount: 0,
       description: "",
-      status: "",
+      date: Date.now().toString().split('T')[0],
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch(`${serverUrl}/tasks`, {
+      const response = await fetch(`${serverUrl}/transactions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,8 +55,8 @@ export function TaskForm({ closeModal }: InputFormProps) {
       }
 
       queryClient.invalidateQueries({
-        queryKey : ["tasks"]
-      }) // Refetch tasks
+        queryKey : ["transactions"]
+      }) // Refetch transactions
       closeModal() // Close the modal after successful submission
     } catch (error) {
       console.error("Error creating task:", error)
@@ -68,12 +68,12 @@ export function TaskForm({ closeModal }: InputFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="title"
+          name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Amount</FormLabel>
               <FormControl>
-                <Input placeholder="Enter title" {...field} />
+                <Input type="number" placeholder="Enter Amount" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

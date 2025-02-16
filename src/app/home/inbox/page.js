@@ -8,8 +8,8 @@ import { DataTable } from "./data-table";
 import "./components/data";
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 console.log(serverUrl);
-async function fetchTasks(){
-  const response = await fetch(`${serverUrl}/tasks`, {
+async function fetchtransactions(){
+  const response = await fetch(`${serverUrl}/transactions`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -18,17 +18,17 @@ async function fetchTasks(){
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch tasks: ${response.statusText}`);
+    throw new Error(`Failed to fetch transactions: ${response.statusText}`);
   }
 
   const data = await response.json();
-  return data.tasks;
+  return data.transactions;
 }
 
 export default function DemoPage() {
   const { data: taskData, error, isLoading } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: fetchTasks,
+    queryKey: ["transactions"],
+    queryFn: fetchtransactions,
   });
   const queryClient = useQueryClient();
   
@@ -37,8 +37,10 @@ export default function DemoPage() {
   }
 
   if (error) {
-    return <div>Error fetching tasks: {error.message}</div>;
+    return <div>Error fetching transactions: {error.message}</div>;
   }
+
+  console.log(taskData)
 
   return (
     <div className="container mx-auto py-10">

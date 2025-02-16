@@ -16,11 +16,11 @@ import {
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 const formSchema = z.object({
-  title: z.string().min(2, { message: "Title must be at least 2 characters." }),
+  amount: z.coerce.number(),
   description: z
     .string()
     .min(2, { message: "Description must be at least 2 characters." }),
-    status: z.string(),
+    date: z.string(),
 
 })
 
@@ -28,15 +28,15 @@ interface EditFromProps {
   closeModal: () => void
 }
 
-export function EditForm({ task, closeModal }: any){
-    console.log(task);
+export function EditForm({ transaction, closeModal }: any){
+    console.log(transaction);
     const queryClient = useQueryClient()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: task.title,
-      description: task.description,
-      status: task.status,
+      amount: transaction.amount,
+      description: transaction.description,
+      date: transaction.date,
     },
   })
 
@@ -44,7 +44,7 @@ export function EditForm({ task, closeModal }: any){
 
     console.log(values);
     try {
-      const response = await fetch(`${serverUrl}/tasks/${task._id}`, {
+      const response = await fetch(`${serverUrl}/transactions/${transaction._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -54,15 +54,15 @@ export function EditForm({ task, closeModal }: any){
       })
 
       if (!response.ok) {
-        throw new Error(`Failed to create task: ${response.statusText}`)
+        throw new Error(`Failed to create transaction: ${response.statusText}`)
       }
 
       queryClient.invalidateQueries({
-        queryKey : ["tasks"]
-      }) // Refetch tasks
+        queryKey : ["transactions"]
+      }) // Refetch transactions
       closeModal() // Close the modal after successful submission
     } catch (error) {
-      console.error("Error creating task:", error)
+      console.error("Error creating transaction:", error)
     }
   }
 
@@ -71,12 +71,12 @@ export function EditForm({ task, closeModal }: any){
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="title"
+          name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Amount</FormLabel>
               <FormControl>
-                <Input placeholder="Enter title" {...field} />
+                <Input placeholder="Enter amount" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,19 +88,6 @@ export function EditForm({ task, closeModal }: any){
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter description" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-           <FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Status</FormLabel>
               <FormControl>
                 <Input placeholder="Enter description" {...field} />
               </FormControl>
