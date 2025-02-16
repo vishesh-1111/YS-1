@@ -54,7 +54,7 @@ const chartConfig = {
     color: "#2563eb",
   },
 } satisfies ChartConfig
-export  function RenderBarChart() {
+  function RenderBarChart() {
   return (
     <Card className="mt-10">
       <CardHeader>
