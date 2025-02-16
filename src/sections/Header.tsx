@@ -7,7 +7,7 @@ export const Header = () => {
   return (
     <header className="sticky top-0 backdrop-blur-sm z-20">
       <div className="flex justify-center items-center py-3 bg-black text-white text-sm gap-3">
-        <p className="text-white/60 hidden md:block">Streamline your workflow and boost your productivity</p>
+        <p className="text-white/60 hidden md:block">Streamline your payments and boost your savings</p>
         <div className="inline-flex gap-1 items-center">
           <Link
           href={'/login'}
@@ -26,9 +26,8 @@ export const Header = () => {
 
             <nav className="hidden md:flex gap-6 text-black/60 items-center">
               <a href="/about">About</a>
-              <a href="/login" className="underline ">Login</a>
-              <Link href={'/register'}>
-              <button  className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">Signup</button>
+              <Link href={'/home'}>
+              <button  className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">Live Demo</button>
               </Link>
             </nav>
 

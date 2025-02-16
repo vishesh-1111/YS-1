@@ -37,14 +37,14 @@ export const Hero = () => {
           <div className="md:w-[478px]">
          
             <h1 className="text-5xl md:text-7xl font-bold tracking-tigher bg-gradient-to-b from-black to-[#001e80] text-transparent bg-clip-text mt-6">
-              Pathway to productivity
+              Pathway to savings
             </h1>
             <p className="text-xl text-[#010d3e] tracking-tight mt-6">
               An app designed to track
-              your progress,manage your tasks,fix your schedule.
+              your transactions,manage your billings,fix your budget.
             </p>
             <div className="flex gap-1 items-center mt-[30px]">
-              <Link href={'/register'}>
+              <Link href={'/home'}>
               <button className="btn btn-primary">Start for free</button>
               </Link>
              

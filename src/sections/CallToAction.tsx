@@ -47,8 +47,8 @@ const sectionRef = useRef(null);
           />
         </div>
         <div className="flex gap-2 mt-10 justify-center">
-          <Link href={'/register'}>
-          <button className="btn btn-primary">Signup for free</button>
+          <Link href={'/home'}>
+          <button className="btn btn-primary">Lets Go</button>
           </Link>
          
         </div>
