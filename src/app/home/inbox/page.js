@@ -9,6 +9,7 @@ import "./components/data";
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 console.log(serverUrl);
 async function fetchtransactions(){
+  console.log('fetching from inbox')
   const response = await fetch(`${serverUrl}/transactions`, {
     method: "GET",
     headers: {
@@ -29,6 +30,7 @@ export default function DemoPage() {
   const { data: taskData, error, isLoading } = useQuery({
     queryKey: ["transactions"],
     queryFn: fetchtransactions,
+    staleTime : 1000*60*30,
   });
   const queryClient = useQueryClient();
   

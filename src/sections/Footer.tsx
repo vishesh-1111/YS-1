@@ -15,7 +15,7 @@ export const Footer = () => {
           <Image src={logo} height={40} alt="SaaS logo" className="relative" />
         </div>
     
-        <p className="mt-6">&copy; 2025 EzTask, Inc. All rights reserved.
+        <p className="mt-6">&copy; 2025 Transactify, Inc. All rights reserved.
           <br /><Link className="hover:text-white transition-all" href="https://github.com/vishesh-1111">Make with ❤️ by Vishesh</Link>
         </p>
       </div>

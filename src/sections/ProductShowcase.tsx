@@ -27,10 +27,10 @@ export const ProductShowcase = () => {
             <div className="tag">Boost your productivity</div>
           </div>
           <h2 className="section-title mt-5">
-            A more effective way to track your tasks
+            A more effective way to track your payments
           </h2>
           <p className="section-description mt-5">
-            Effortlessly create tasks and manage them.
+            Effortlessly create transactions.
           </p>
         </div>
         <div className="relative">

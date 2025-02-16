@@ -20,7 +20,7 @@ const formSchema = z.object({
   description: z
     .string()
     .min(2, { message: "Description must be at least 2 characters." }),
-    date: z.string(),
+    date: z.date(),
 
 })
 
@@ -90,6 +90,26 @@ export function EditForm({ transaction, closeModal }: any){
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Input placeholder="Enter description" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+           <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>date</FormLabel>
+              <FormControl>
+              <Input
+                type="date"
+                placeholder="Enter date"
+                {...field}
+                value={field.value instanceof Date ? field.value.toISOString().split("T")[0] : ""}
+                onChange={(e) => field.onChange(e.target.value ? new Date(e.target.value) : null)}
+              />
+
               </FormControl>
               <FormMessage />
             </FormItem>

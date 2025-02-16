@@ -19,7 +19,7 @@ const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 export type Task = {
   amount: Number
   description: string
-  data: string
+  date:string
   _id : string
 }
 

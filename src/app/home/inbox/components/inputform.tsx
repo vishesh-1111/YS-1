@@ -92,6 +92,19 @@ export function TaskForm({ closeModal }: InputFormProps) {
             </FormItem>
           )}
         />
+            <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>date</FormLabel>
+              <FormControl>
+                <Input type="date" placeholder="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>

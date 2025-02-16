@@ -10,7 +10,7 @@ export const Header = () => {
         <p className="text-white/60 hidden md:block">Streamline your payments and boost your savings</p>
         <div className="inline-flex gap-1 items-center">
           <Link
-          href={'/login'}
+          href={'/home'}
           >
           <p>Get started for free</p>
           </Link>

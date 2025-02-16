@@ -69,7 +69,7 @@ export function AppSidebar() {
     <Sidebar side="left" variant="sidebar" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="underline">EzTask</SidebarGroupLabel>
+          <SidebarGroupLabel className="underline">Transactify</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

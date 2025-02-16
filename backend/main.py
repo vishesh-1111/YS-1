@@ -35,7 +35,7 @@ client = AsyncIOMotorClient(database_url);
 db = client["db31"]
 transaction_collection = db["transactions"]
 
-
+# print(database_url)
 
 class TransactionPostRequest(BaseModel):
     amount : float
@@ -45,6 +45,7 @@ class TransactionPostRequest(BaseModel):
 class TransactionPutRequest(BaseModel):
     amount : float
     description : str 
+    date :str
 
 @app.post("/transactions")
 async def login(request: Request,transaction_data: TransactionPostRequest,response: Response):
@@ -88,7 +89,8 @@ async def update_transactions(transaction_id: str, transaction_data: Transaction
     await transaction_collection.update_one(
         {"_id": ObjectId(transaction_id)},
         {"$set": {"amount": transaction_data.amount, 
-                  "description": transaction_data.description}}
+                  "description": transaction_data.description,
+                    "date":transaction_data.date}}
     )
     return {"message": "Transaction updated successfully"}
 
