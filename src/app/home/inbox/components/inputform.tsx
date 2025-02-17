@@ -14,15 +14,30 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const formSchema = z.object({
   amount: z.coerce.number(),
   description: z
     .string()
     .min(2, { message: "Description must be at least 2 characters." }),
-    date: z.string(),
-
-})
+  date: z.string(),
+  category: z.enum(["rent", "grocery", "utility", "transportation"]),
+});
 
 interface InputFormProps {
   closeModal: () => void
@@ -41,6 +56,7 @@ export function TaskForm({ closeModal }: InputFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      console.log(values)
       const response = await fetch(`${serverUrl}/transactions`, {
         method: "POST",
         headers: {
@@ -88,6 +104,31 @@ export function TaskForm({ closeModal }: InputFormProps) {
               <FormControl>
                 <Input placeholder="Enter description" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+      <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>category</FormLabel>
+                {/* <Input placeholder="Enter description" {...field} /> */}
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select Category" />
+                </SelectTrigger>
+              </FormControl>
+                <SelectContent>
+                  <SelectItem value="rent">Rent</SelectItem>
+                  <SelectItem value="grocery">Grocery</SelectItem>
+                  <SelectItem value="utility">Utility</SelectItem>              
+                  <SelectItem value="transportation">Transportation</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

@@ -41,11 +41,13 @@ class TransactionPostRequest(BaseModel):
     amount : float
     description : str 
     date : datetime
+    category :str
 
 class TransactionPutRequest(BaseModel):
     amount : float
     description : str 
     date :str
+    category : str
 
 @app.post("/transactions")
 async def login(request: Request,transaction_data: TransactionPostRequest,response: Response):
@@ -55,7 +57,8 @@ async def login(request: Request,transaction_data: TransactionPostRequest,respon
         result = await transaction_collection.insert_one({
             "amount": transaction_data.amount,
             "description": transaction_data.description,
-             "date" : transaction_data.date
+             "date" : transaction_data.date,
+             "category":transaction_data.category
         })
         return {"message": "Transaction created successfully", "transaction_id": str(result.inserted_id)}
     except PyMongoError as e:
@@ -66,7 +69,8 @@ def task_serializer(transaction):
         "_id": str(transaction["_id"]),
         "amount": transaction["amount"],
         "description": transaction["description"],
-        "date": transaction["date"]
+        "date": transaction["date"],
+        "category":transaction["category"]
     }
 @app.get("/transactions")
 async def get_transactions(request: Request):
@@ -90,7 +94,9 @@ async def update_transactions(transaction_id: str, transaction_data: Transaction
         {"_id": ObjectId(transaction_id)},
         {"$set": {"amount": transaction_data.amount, 
                   "description": transaction_data.description,
-                    "date":transaction_data.date}}
+                    "date":transaction_data.date,
+                    "category":transaction_data.category
+                    }}
     )
     return {"message": "Transaction updated successfully"}
 

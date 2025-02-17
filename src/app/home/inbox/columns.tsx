@@ -21,6 +21,7 @@ export type Task = {
   description: string
   date:string
   _id : string
+  category :string
 }
 
 export function getColumns(queryClient: ReturnType<typeof useQueryClient>): ColumnDef<Task>[] {
@@ -62,6 +63,10 @@ export function getColumns(queryClient: ReturnType<typeof useQueryClient>): Colu
     {
       accessorKey: "description",
       header: "Description",
+    },
+    {
+      accessorKey: "category",
+      header: "Category",
     },
     {
       accessorKey: "date",
