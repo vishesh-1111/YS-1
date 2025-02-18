@@ -6,7 +6,7 @@ import QueryClientProviderComponent from '@/components/queryClientProvider/provi
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EzTask",
+  title: "Transactify",
   description: "Task Management App",
 };
 
