@@ -9,15 +9,15 @@ import {
   } from '@/components/ui/card'
 
 
-  function getClosestThreeDocuments(data) {
-    if (!Array.isArray(data) || data.length === 0) {
-      return []; // Return an empty array if data is not valid
+  function getClosestThreeDocuments(transactiondata) {
+    if (!Array.isArray(transactiondata) || transactiondata.length === 0) {
+      return []; // Return an empty array if transactiondata is not valid
     }
   
     const today = new Date(); // Get today's date
     
     // Sort by absolute difference from today's date
-    return data
+    return transactiondata
       .map(item => ({
         ...item,
         dateDiff: Math.abs(new Date(item.date) - today) // Calculate time difference
@@ -26,8 +26,8 @@ import {
       .slice(0, 3); // Take the first 5 items
   }
 
-export default function RenderRecentTransactions({data}){
-    const recentTransactions = getClosestThreeDocuments(data)
+export default function RenderRecentTransactions({transactiondata}){
+    const recentTransactions = getClosestThreeDocuments(transactiondata)
     console.log('rec',recentTransactions);
     return (
         <Card className='col-span-1 lg:col-span-3'>

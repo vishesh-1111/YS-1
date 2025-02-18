@@ -40,27 +40,27 @@ import {
     return transactions.filter(transaction => new Date(transaction.date) > now);
   }
   
-  function getTotalExpenses(data) {
-    if (!Array.isArray(data) || data.length === 0) {
+  function getTotalExpenses(transactiondata) {
+    if (!Array.isArray(transactiondata) || transactiondata.length === 0) {
       return 0; // Return 0 if the input is not a valid array or is empty
     }
   
-    return data.reduce((total, item) => total + (item.amount || 0), 0);
+    return transactiondata.reduce((total, item) => total + (item.amount || 0), 0);
   }
   
-  function getMaxAmount(data) {
-    if (!Array.isArray(data) || data.length === 0) {
+  function getMaxAmount(transactiondata) {
+    if (!Array.isArray(transactiondata) || transactiondata.length === 0) {
       return null; // Return null if the input is not a valid array or is empty
     }
     
-    return Math.max(...data.map(item => item.amount));
+    return Math.max(...transactiondata.map(item => item.amount));
   }
   
-export default function RenderSummaryCards({data}){
-   const mxamnt = getMaxAmount(data)
-   const totamnt= getTotalExpenses(data)
-   const futuretransactions = getFutureTransactions(data)
-   const mostnusymonth = getMonthWithHighestSum(data);
+export default function RenderSummaryCards({transactiondata}){
+   const mxamnt = getMaxAmount(transactiondata)
+   const totamnt= getTotalExpenses(transactiondata)
+   const futuretransactions = getFutureTransactions(transactiondata)
+   const mostnusymonth = getMonthWithHighestSum(transactiondata);
     return(
         <>
      <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -110,7 +110,7 @@ export default function RenderSummaryCards({data}){
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>{data.length}</div>
+                  <div className='text-2xl font-bold'>{transactiondata.length}</div>
                   <p className='text-xs text-muted-foreground'>
                     +180.1% from last month
                   </p>

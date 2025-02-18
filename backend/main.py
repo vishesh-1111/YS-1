@@ -8,6 +8,8 @@ from bson import ObjectId
 import os
 from datetime import datetime
 from jose import JWTError, jwt
+from typing import List
+
 from dotenv import load_dotenv
 load_dotenv()
 # # FastAPI app setup
@@ -34,6 +36,7 @@ database_url = os.getenv("DATABASE_URL")
 client = AsyncIOMotorClient(database_url);  
 db = client["db31"]
 transaction_collection = db["transactions"]
+budget_collection = db["budgets"]
 
 # print(database_url)
 
@@ -49,6 +52,11 @@ class TransactionPutRequest(BaseModel):
     date :str
     category : str
 
+
+class BudgetPutRequest(BaseModel):
+    budget : float
+    month : str 
+    category : str
 @app.post("/transactions")
 async def login(request: Request,transaction_data: TransactionPostRequest,response: Response):
     print(transaction_data)
@@ -114,8 +122,44 @@ async def delete_transaction(transaction_id: str, request: Request):
     await transaction_collection.delete_one({"_id": ObjectId(transaction_id)})
     return {"message": "Transaction deleted successfully"}
     
-    
+@app.post("/budgets")
+async def create_or_update_budget(request: Request, budget_data: BudgetPutRequest, response: Response):
+    try:
+        print(budget_data)
+        result = await budget_collection.update_one(
+            {"month": budget_data.month},  
+            {"$set": {
+                "budget": budget_data.budget,
+                "category": budget_data.category
+            }},
+            upsert=True  
+        )
 
+        if result.matched_count > 0:
+            return {"message": "Budget updated successfully"}
+        else:
+            return {"message": "Budget created successfully"}
+
+    except PyMongoError as e:
+        raise HTTPException(status_code=500, detail=f"Failed to process budget: {str(e)}")
+
+def budget_serializer(budget):
+    """Convert MongoDB Budget document to a JSON-serializable format."""
+    return {
+        "_id": str(budget["_id"]),
+        "budget": budget["budget"],
+        "month": budget["month"],
+        "category": budget["category"]
+    }
+@app.get("/budgets")
+async def get_all_budgets(request:Request):
+    try:
+        budgets = await budget_collection.find().to_list(length=100)
+        serialized_budgetss = [budget_serializer(bud) for bud in budgets]
+        print(serialized_budgetss)
+        return {"budgets": serialized_budgetss}
+    except PyMongoError as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve budgets: {str(e)}")
 
 @app.get("/")
 async def read_root(request:Request):
